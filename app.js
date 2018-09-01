@@ -9,11 +9,13 @@ const voters = [
 
     {
         id: '1',
-        name: 'Todd Schultz'
+        name: 'Todd_Schultz',
+        voted: false
     },
     {
         id: '2',
-        name: 'Ulisse Rotolo'
+        name: 'Ulisse_Rotolo',
+        voted: false
     }
 ];
 
@@ -30,16 +32,32 @@ app.get('/voters', (req, res, next) => {
 
 app.get('/voters/:id', (req, res, next) => {
     var voterId = req.params.id;
-    var flag = voters.forEach((element) => {
-        if (element.id === voterId) {
-            return true;
-        } else {
-            return false;
+    var flag = false;
+    voters.forEach((element) => {
+        if (element.id == voterId) {
+            flag = true;
         }
     });
     if (flag) {
-        res.status(200).send(element);
+        res.status(200).send(true);
     } else {
-        res.status(404).send();
+        res.status(404).send(false);
     }
-})
+});
+
+app.post('/voter/:id/:name',(req, res, next) => {
+    var voterId = req.params.id;
+    var name = req.params.name;
+    const voter = {
+        id: req.params.id,
+        name: req.params.name,
+        voted: false
+    }
+    if(voters[voter.id]){
+        res.status(400).send();
+    } else{
+        voters.push(voter);
+        res.status(200).send(voter);
+    }
+});
+
