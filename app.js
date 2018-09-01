@@ -24,7 +24,7 @@ app.use((req, res, next) => {
 
 app.listen(PORT, () => console.log(`API listening on ${PORT}`));
 
-app.get('/voters', (res, req, next) => {
+app.get('/voters', (req, res, next) => {
     res.status(200).send(voters);
 });
 
