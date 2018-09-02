@@ -45,7 +45,7 @@ app.get('/voters/:id', (req, res, next) => {
     }
 });
 
-app.post('/voter/:id/:name',(req, res, next) => {
+app.post('/voter/:id/:name', (req, res, next) => {
     var voterId = req.params.id;
     var name = req.params.name;
     const voter = {
@@ -53,11 +53,30 @@ app.post('/voter/:id/:name',(req, res, next) => {
         name: req.params.name,
         voted: false
     }
-    if(voters[voter.id]){
+    if (voters[voter.id]) {
         res.status(400).send();
-    } else{
+    } else {
         voters.push(voter);
         res.status(200).send(voter);
     }
 });
 
+app.put('/voter/vote/:id', (req, res, next) => {
+    var voter = getVoterById(req.params.id);
+    if (voter) {
+        voters[voter.id - 1].voted = true;
+        res.status(200).send(voters[voter.id - 1]);
+    } else {
+        res.status(404).send('Not Found');
+    }
+});
+
+function getVoterById(id) {
+    var voter;
+    voters.forEach(function (element) {
+        if (element.id === id) {
+            voter = element;
+        }
+    });
+    return voter;
+};
