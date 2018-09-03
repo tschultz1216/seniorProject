@@ -5,6 +5,18 @@ app.use(express.static('public'));
 
 const PORT = 8080;
 
+const loginCred = [
+    {
+        username: 'tschultz',
+        password: 'test',
+        voterId: '1'
+    },
+    {
+        username: 'urotolo',
+        password: 'test1',
+        voterId: '2'
+    }]
+
 const voters = [
 
     {
@@ -68,6 +80,22 @@ app.put('/voter/vote/:id', (req, res, next) => {
         res.status(200).send(voters[voter.id - 1]);
     } else {
         res.status(404).send('Not Found');
+    }
+});
+
+app.post('/login/:username/:password',(req, res, next) => {
+    var user = req.params.username;
+    var pwd = req.params.password;
+    var flag = false;
+    loginCred.forEach(function(element){
+        if(element.username == user && element.password == pwd){
+            flag = true;
+        }
+    });
+    if(flag){
+        res.status(200).send(true);
+    } else{
+        res.status(404).send(false);
     }
 });
 
